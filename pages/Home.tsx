@@ -1,10 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Play, Code2, GraduationCap, Map, ArrowRight, 
-  Terminal, Sparkles, Database, BrainCircuit
-} from 'lucide-react';
+import { Play } from 'lucide-react';
 import { COURSES } from '../constants';
 import { Language, ThemeMode } from '../types';
 
