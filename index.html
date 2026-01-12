@@ -1,112 +1,436 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyData Academy | VS Code Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <title>PyData Academy</title>
     <style>
-        :root {
-            --vscode-bg: #0d1117;
-            --vscode-sidebar: #161b22;
-            --vscode-header: #010409;
-            --vscode-accent: #58a6ff;
-            --vscode-text: #c9d1d9;
-            --vscode-border: #30363d;
-        }
-        
-        body {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            background-color: var(--vscode-bg);
-            color: var(--vscode-text);
+            box-sizing: border-box;
         }
 
-        /* Flowing Code Animation */
-        .code-rain {
-            position: fixed;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            sticky top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+            display: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .back-btn.visible {
+            display: block;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Home Section */
+        .home-section {
+            display: block;
+        }
+
+        .home-section.hidden {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Course Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .course-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #e2e8f0;
+            display: block;
+        }
+
+        .course-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .course-description {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        .course-duration {
+            color: var(--text-light);
+        }
+
+        .course-action {
+            color: var(--primary);
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .course-card:hover .course-action {
+            transform: translateX(4px);
+        }
+
+        /* Player Section */
+        .player-section {
+            display: none;
+        }
+
+        .player-section.visible {
+            display: block;
+        }
+
+        .player-info {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .player-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .player-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .player-description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.05;
-            overflow: hidden;
-            font-size: 14px;
-            white-space: nowrap;
+            border: none;
         }
 
-        .code-column {
-            position: absolute;
-            top: -100px;
-            animation: fall linear infinite;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
 
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0d1117;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #30363d;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #484f58;
-        }
+            .section-title {
+                font-size: 1.5rem;
+            }
 
-        .glass-panel {
-            background: rgba(13, 17, 23, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(48, 54, 61, 0.5);
+            .player-title {
+                font-size: 1.25rem;
+            }
         }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
-    "framer-motion": "https://esm.sh/framer-motion@^11.11.11"
-  }
-}
-</script>
 </head>
-<body class="transition-colors duration-500">
-    <div id="root"></div>
-    <div class="code-rain" id="code-rain"></div>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 3L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-6-4z"/>
+                </svg>
+                PyData Academy
+            </div>
+            <div class="nav-right">
+                <button class="back-btn" onclick="goHome()">← Back to Courses</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Home Section -->
+        <section class="home-section" id="homeSection">
+            <h1 class="section-title">📚 Choose Your Course</h1>
+            <p class="section-subtitle">Learn data science and Python from beginner to advanced</p>
+            <div class="courses-grid" id="coursesGrid"></div>
+        </section>
+
+        <!-- Player Section -->
+        <section class="player-section" id="playerSection">
+            <div class="video-container">
+                <iframe id="videoPlayer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="player-info">
+                <h1 class="player-title" id="playerTitle"></h1>
+                <div class="player-meta">
+                    <span class="meta-item">
+                        <span>📖</span>
+                        <span id="playerLanguage"></span>
+                    </span>
+                    <span class="meta-item">
+                        <span>⏱️</span>
+                        <span id="playerDuration"></span>
+                    </span>
+                </div>
+                <p class="player-description" id="playerDescription"></p>
+            </div>
+        </section>
+    </div>
 
     <script>
-        const codeRain = document.getElementById('code-rain');
-        const snippets = [
-            'import pandas as pd', 'df = pd.read_csv("data.csv")', 'model.fit(X_train, y_train)',
-            'plt.show()', 'np.array([1, 2, 3])', 'def train_model(data):', 'print(f"Accuracy: {acc}")',
-            'while True:', 'async def fetch_data():', 'yield batch', 'torch.nn.Linear(128, 64)',
-            'optimizer.step()', 'loss.backward()', 'from sklearn import datasets'
+        // Courses data
+        const courses = [
+            {
+                id: 'hindi-beginner-1',
+                title: 'Data Analytics Full Course - Beginner to Pro',
+                youtubeId: 'VaSjiJMrq24',
+                description: 'Master Data Analytics from scratch in Hindi. Covers Python, Excel, SQL, and PowerBI.',
+                duration: '29 Hours',
+                language: 'Hindi',
+                thumbnail: 'https://img.youtube.com/vi/VaSjiJMrq24/maxresdefault.jpg'
+            },
+            {
+                id: 'english-advanced-1',
+                title: 'Python for Data Science – Full Course',
+                youtubeId: 'CMEWVn1uZpQ',
+                description: 'Comprehensive Python tutorial specifically tailored for Data Science workflows.',
+                duration: '18 Hours',
+                language: 'English',
+                thumbnail: 'https://img.youtube.com/vi/CMEWVn1uZpQ/maxresdefault.jpg'
+            },
+            {
+                id: 'english-advanced-2',
+                title: 'Python for DS (Pandas, NumPy, Matplotlib)',
+                youtubeId: 'LHBE6Q9XlzI',
+                description: 'Deep dive into the essential libraries that power modern data science.',
+                duration: '13 Hours',
+                language: 'English',
+                thumbnail: 'https://img.youtube.com/vi/LHBE6Q9XlzI/maxresdefault.jpg'
+            },
+            {
+                id: 'english-advanced-3',
+                title: 'Learn Data Science - Full Course for Beginners',
+                youtubeId: 'ua-CiDNNj30',
+                description: 'Transition from Python basics to foundational Data Science concepts.',
+                duration: '6 Hours',
+                language: 'English',
+                thumbnail: 'https://img.youtube.com/vi/ua-CiDNNj30/maxresdefault.jpg'
+            },
+            {
+                id: 'english-advanced-4',
+                title: 'Data Science Hands-On Crash Course',
+                youtubeId: 'XU5pw3QRYjQ',
+                description: 'Revision and hands-on project based crash course for final readiness.',
+                duration: '3 Hours',
+                language: 'English',
+                thumbnail: 'https://img.youtube.com/vi/XU5pw3QRYjQ/maxresdefault.jpg'
+            }
         ];
 
-        for (let i = 0; i < 40; i++) {
-            const column = document.createElement('div');
-            column.className = 'code-column';
-            column.style.left = Math.random() * 100 + 'vw';
-            column.style.animationDuration = (Math.random() * 20 + 10) + 's';
-            column.style.animationDelay = (Math.random() * 10) + 's';
-            column.innerText = snippets[Math.floor(Math.random() * snippets.length)];
-            codeRain.appendChild(column);
+        // Render courses grid
+        function renderCourses() {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = courses.map(course => `
+                <div class="course-card" onclick="playVideo('${course.id}')">
+                    <img src="${course.thumbnail}" alt="${course.title}" class="course-thumbnail" onerror="this.style.background='#e2e8f0'">
+                    <div class="course-body">
+                        <span class="course-badge">${course.language}</span>
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <span class="course-duration">⏱️ ${course.duration}</span>
+                            <span class="course-action">Play →</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
+
+        // Play video
+        function playVideo(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('playerSection').classList.add('visible');
+            document.querySelector('.back-btn').classList.add('visible');
+
+            document.getElementById('playerTitle').textContent = course.title;
+            document.getElementById('playerLanguage').textContent = course.language;
+            document.getElementById('playerDuration').textContent = course.duration;
+            document.getElementById('playerDescription').textContent = course.description;
+            document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${course.youtubeId}?autoplay=1`;
+
+            window.scrollTo(0, 0);
+        }
+
+        // Go home
+        function goHome() {
+            document.getElementById('homeSection').classList.remove('hidden');
+            document.getElementById('playerSection').classList.remove('visible');
+            document.querySelector('.back-btn').classList.remove('visible');
+            document.getElementById('videoPlayer').src = '';
+        }
+
+        // Initialize
+        renderCourses();
     </script>
 </body>
 </html>
