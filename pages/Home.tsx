@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { COURSES } from '../constants';
-import { Language, ThemeMode } from '../types';
+import { ThemeMode } from '../types';
 
 interface HomeProps {
   theme: ThemeMode;
