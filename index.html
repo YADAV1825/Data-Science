@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyData Academy | VS Code Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vscode-bg: #0d1117;
+            --vscode-sidebar: #161b22;
+            --vscode-header: #010409;
+            --vscode-accent: #58a6ff;
+            --vscode-text: #c9d1d9;
+            --vscode-border: #30363d;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: var(--vscode-bg);
+            color: var(--vscode-text);
+        }
+
+        /* Flowing Code Animation */
+        .code-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+            overflow: hidden;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .code-column {
+            position: absolute;
+            top: -100px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "framer-motion": "https://esm.sh/framer-motion@^11.11.11"
+  }
+}
+</script>
+</head>
+<body class="transition-colors duration-500">
+    <div id="root"></div>
+    <div class="code-rain" id="code-rain"></div>
+
+    <script>
+        const codeRain = document.getElementById('code-rain');
+        const snippets = [
+            'import pandas as pd', 'df = pd.read_csv("data.csv")', 'model.fit(X_train, y_train)',
+            'plt.show()', 'np.array([1, 2, 3])', 'def train_model(data):', 'print(f"Accuracy: {acc}")',
+            'while True:', 'async def fetch_data():', 'yield batch', 'torch.nn.Linear(128, 64)',
+            'optimizer.step()', 'loss.backward()', 'from sklearn import datasets'
+        ];
+
+        for (let i = 0; i < 40; i++) {
+            const column = document.createElement('div');
+            column.className = 'code-column';
+            column.style.left = Math.random() * 100 + 'vw';
+            column.style.animationDuration = (Math.random() * 20 + 10) + 's';
+            column.style.animationDelay = (Math.random() * 10) + 's';
+            column.innerText = snippets[Math.floor(Math.random() * snippets.length)];
+            codeRain.appendChild(column);
+        }
+    </script>
+</body>
+</html>
